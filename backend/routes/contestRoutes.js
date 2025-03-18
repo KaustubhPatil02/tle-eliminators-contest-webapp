@@ -2,6 +2,7 @@ const express = require("express");
 const axios = require("axios");
 const Bookmark = require("../models/Bookmark");
 const cheerio = require("cheerio");
+const fetchLeetCodeContestProblems = require('../scrapping/fetchLeetCodeContestProblems');
 
 const router = express.Router();
 
@@ -160,5 +161,48 @@ router.delete("/bookmarks/:id", async (req, res) => {
     res.status(500).json({ error: "Failed to delete bookmark" });
   }
 });
+
+
+// router.get("/leetcode-contest-problems", async (req, res) => {
+//   const { contestUrl } = req.query;
+
+//   if (!contestUrl) {
+//     console.error("Missing contestUrl parameter in request");
+//     return res.status(400).json({ error: "Missing contestUrl parameter" });
+//   }
+
+//   console.log("Received contestUrl:", contestUrl); // Debugging
+
+//   try {
+//     const problems = await fetchLeetCodeContestProblems(contestUrl);
+//     console.log("Fetched problems:", problems); // Debugging
+//     res.json({ problems });
+//   } catch (error) {
+//     console.error("Error fetching contest problems:", error.message);
+//     res.status(500).json({ error: "Failed to fetch contest problems" });
+//   }
+// });
+
+router.get("/leetcode-contest-problems", async (req, res) => {
+  const { contestUrl } = req.query;  // ✅ Extract `contestUrl` correctly
+
+  if (!contestUrl) {
+    console.error("Missing contestUrl parameter in request");
+    return res.status(400).json({ error: "Missing contestUrl parameter" });
+  }
+
+  // console.log("Received contestUrl:", contestUrl); // Debugging
+
+  try {
+    const problems = await fetchLeetCodeContestProblems(contestUrl);
+    // console.log("Fetched problems:", problems); // Debugging
+    res.json({ problems });
+  } catch (error) {
+    console.error("Error fetching contest problems:", error.message);
+    res.status(500).json({ error: "Failed to fetch contest problems" });
+  }
+});
+
+// console.log("Received contestUrl:", contestUrl);
 
 module.exports = router;

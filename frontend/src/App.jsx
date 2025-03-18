@@ -6,7 +6,7 @@ import Home from "./pages/Home";
 import Bookmarks from "./pages/Bookmarks";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import ContestDetails from './components/ContestDetails';
+import ProblemDetails from './components/ProblemDetails';
 
 function App() {
   return (
@@ -16,7 +16,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/bookmarks" element={<Bookmarks />} />
-            <Route path="/contest/:id" element={<ContestDetails />} />
+            {/* <Route path="/contest/:id" element={<ProblemDetails />} /> */}
           </Routes>
         </Router>
         <ToastContainer />

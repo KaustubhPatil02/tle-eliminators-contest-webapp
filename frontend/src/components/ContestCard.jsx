@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
+import ProblemDetails from "./ProblemDetails";
 
 const ContestCard = ({ contest, fetchBookmarks }) => {
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [bookmarkId, setBookmarkId] = useState(null);
+  const [selectedContestUrl, setSelectedContestUrl] = useState(null); // State to manage ProblemDetails rendering
 
   useEffect(() => {
     const checkIfBookmarked = async () => {
@@ -46,8 +47,21 @@ const ContestCard = ({ contest, fetchBookmarks }) => {
     }
   };
 
+  // Render ProblemDetails if a contest is selected
+  if (selectedContestUrl) {
+    return (
+      <ProblemDetails
+        contestUrl={selectedContestUrl} // Pass the selected contest URL
+        onBack={() => setSelectedContestUrl(null)} // Reset the state when back is clicked
+      />
+    );
+  }
+
   return (
-    <div className="relative p-5 bg-white dark:bg-gray-800 rounded-xl shadow-md transition-all duration-300 hover:shadow-xl border border-gray-200 dark:border-gray-700">
+    <div
+      className="relative p-5 bg-white dark:bg-gray-800 rounded-xl shadow-md transition-all duration-300 hover:shadow-xl border border-gray-200 dark:border-gray-700 cursor-pointer"
+      onClick={() => setSelectedContestUrl(contest.url)} // Clicking sets the selected contest URL
+    >
       {/* Platform & Title */}
       <div className="flex justify-between items-center">
         <div className="flex flex-col">
@@ -55,7 +69,10 @@ const ContestCard = ({ contest, fetchBookmarks }) => {
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{contest.title}</h3>
         </div>
         <button
-          onClick={handleBookmark}
+          onClick={(e) => {
+            e.stopPropagation(); // Prevents the card click from triggering
+            handleBookmark();
+          }}
           className={`text-xl transition ${isBookmarked ? "text-yellow-500" : "text-gray-400"} hover:text-yellow-600`}
         >
           {isBookmarked ? "⭐" : "☆"}
@@ -67,12 +84,15 @@ const ContestCard = ({ contest, fetchBookmarks }) => {
 
       {/* Buttons: View More & External Link */}
       <div className="mt-4 flex justify-between">
-        <Link
-          to={`/contest/${contest.slug || contest.title.replace(/\s+/g, "-").toLowerCase()}`}
+        <button
+          onClick={(e) => {
+            e.stopPropagation(); // Prevents the card click from triggering
+            setSelectedContestUrl(contest.url); // Open ProblemDetails
+          }}
           className="px-3 py-1.5 bg-blue-500 text-white rounded-md text-sm font-medium hover:bg-blue-600 transition"
         >
-          View More
-        </Link>
+          View Problems
+        </button>
 
         <a
           href={contest.url}

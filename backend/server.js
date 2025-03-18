@@ -4,6 +4,8 @@ const cors = require("cors");
 require("dotenv").config();
 
 const contestRoutes = require("./routes/contestRoutes");
+const fetchLeetCodeContestProblems = require('./scrapping/fetchLeetCodeContestProblems');
+
 
 const app = express();
 app.use(express.json());
@@ -13,6 +15,8 @@ app.use(cors({
 
 // Routes
 app.use("/api", contestRoutes);
+
+// app.use('api', fetchLeetCodeContestProblems);
 
 // Database Connection
 mongoose.connect(process.env.MONGO_URI, {
@@ -24,3 +28,4 @@ mongoose.connect(process.env.MONGO_URI, {
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+

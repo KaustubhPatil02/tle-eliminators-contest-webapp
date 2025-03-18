@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 const ContestCard = ({ contest, fetchBookmarks }) => {
   const [isBookmarked, setIsBookmarked] = useState(false);
@@ -45,30 +46,43 @@ const ContestCard = ({ contest, fetchBookmarks }) => {
     }
   };
 
-    return (
-    <div className="relative p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl border border-gray-200 dark:border-gray-700">
-      <div className="flex justify-between items-center mb-3">
-      <div className="flex flex-col items-start gap-2 sm:gap-4">
-  <h2 className="text-l font-semibold text-gray-900 dark:text-white">({contest.platform})</h2>
-  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{contest.title}</h3>
-</div>
-
-        <button 
+  return (
+    <div className="relative p-5 bg-white dark:bg-gray-800 rounded-xl shadow-md transition-all duration-300 hover:shadow-xl border border-gray-200 dark:border-gray-700">
+      {/* Platform & Title */}
+      <div className="flex justify-between items-center">
+        <div className="flex flex-col">
+          <h2 className="text-sm font-medium text-gray-700 dark:text-gray-300">{contest.platform}</h2>
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{contest.title}</h3>
+        </div>
+        <button
           onClick={handleBookmark}
-          className={`ml-4 px-3 py-1 rounded-lg text-lg transition-all duration-300 ${isBookmarked ? "text-yellow-500" : "text-gray-500"} hover:text-yellow-600`}
+          className={`text-xl transition ${isBookmarked ? "text-yellow-500" : "text-gray-400"} hover:text-yellow-600`}
         >
           {isBookmarked ? "⭐" : "☆"}
         </button>
       </div>
-      <p className="text-gray-700 dark:text-gray-300">{contest.startTime}</p>
-      <a 
-        href={contest.url} 
-        target="_blank" 
-        rel="noopener noreferrer"
-        className="mt-4 block text-blue-600 dark:text-blue-400 font-medium underline hover:text-blue-800 transition duration-300"
-      >
-        View Contest
-      </a>
+
+      {/* Start Time */}
+      <p className="mt-2 text-gray-600 dark:text-gray-400 text-sm">Start: {contest.startTime}</p>
+
+      {/* Buttons: View More & External Link */}
+      <div className="mt-4 flex justify-between">
+        <Link
+          to={`/contest/${contest.slug || contest.title.replace(/\s+/g, "-").toLowerCase()}`}
+          className="px-3 py-1.5 bg-blue-500 text-white rounded-md text-sm font-medium hover:bg-blue-600 transition"
+        >
+          View More
+        </Link>
+
+        <a
+          href={contest.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="px-3 py-1.5 bg-gray-700 text-white rounded-md text-sm font-medium hover:bg-gray-800 transition"
+        >
+          Visit Site
+        </a>
+      </div>
     </div>
   );
 };

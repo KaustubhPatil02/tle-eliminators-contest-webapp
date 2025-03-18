@@ -38,7 +38,7 @@ const Home = () => {
   // 🛑 If user is not logged in, show the login screen
   if (!user) {
     return (
-      <div className={`flex flex-col items-center justify-center min-h-screen px-4 ${theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-900"}`}>
+      <div className={`flex flex-col items-center justify-center min-h-screen px-4 ${theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-100 text-white"}`}>
         <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg w-full max-w-md">
           <h1 className="text-3xl font-bold text-center">Contest Tracker</h1>
           <p className="text-center mt-2 text-gray-500 dark:text-gray-400">Log in to view upcoming contests.</p>

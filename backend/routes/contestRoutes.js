@@ -1,10 +1,11 @@
 const express = require("express");
 const axios = require("axios");
 const Bookmark = require("../models/Bookmark");
+const cheerio = require("cheerio");
 
 const router = express.Router();
 
-// ✅ Fetch Leetcode Contests
+// ✅ Fetch LeetCode Contests
 router.get("/leetcode-contests", async (req, res) => {
   try {
     const response = await axios.post(
@@ -28,29 +29,69 @@ router.get("/leetcode-contests", async (req, res) => {
       }
     );
 
+    if (!response.data || !response.data.data) {
+      return res.status(500).json({ error: "Invalid response from LeetCode API" });
+    }
+
     const twelveMonthsAgo = new Date();
     twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
 
-    const upcomingContests = response.data.data.upcomingContests.map((contest) => ({
+    const formatContest = (contest) => ({
       title: contest.title,
+      slug: contest.title.replace(/\s+/g, "-").toLowerCase(),
       startTime: new Date(contest.startTime * 1000).toLocaleString(),
       url: `https://leetcode.com/contest/${contest.title.replace(/\s+/g, "-").toLowerCase()}`,
       platform: "Leetcode",
-    }));
+    });
 
+    const upcomingContests = response.data.data.upcomingContests.map(formatContest);
     const pastContests = response.data.data.pastContests.data
       .filter((contest) => new Date(contest.startTime * 1000) >= twelveMonthsAgo)
-      .map((contest) => ({
-        title: contest.title,
-        startTime: new Date(contest.startTime * 1000).toLocaleString(),
-        url: `https://leetcode.com/contest/${contest.title.replace(/\s+/g, "-").toLowerCase()}`,
-        platform: "Leetcode",
-      }));
+      .map(formatContest);
 
     res.json({ upcomingContests, pastContests });
   } catch (error) {
     console.error("Error fetching LeetCode contests:", error.message);
-    res.status(500).json({ error: "Error fetching LeetCode contests" });
+    res.status(500).json({ error: "Failed to fetch LeetCode contests" });
+  }
+});
+
+// ✅ Fetch problems from a specific LeetCode contest
+router.get("/leetcode-contest/:slug", async (req, res) => {
+  const { slug } = req.params;
+  const url = `https://leetcode.com/contest/${slug}`;
+
+  try {
+    const { data } = await axios.get(url, {
+      headers: {
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+        Referer: "https://leetcode.com/contest/",
+      },
+    });
+
+    const $ = cheerio.load(data);
+    let problems = [];
+
+    $(".table__3KYK tbody tr").each((index, element) => {
+      const title = $(element).find("td:nth-child(2)").text().trim();
+      if (title) {
+        const problemSlug = title.toLowerCase().replace(/\s+/g, "-");
+        problems.push({
+          title,
+          url: `https://leetcode.com/problems/${problemSlug}/`,
+        });
+      }
+    });
+
+    if (problems.length === 0) {
+      return res.status(404).json({ error: "No problems found for this contest" });
+    }
+
+    res.json({ contest: slug, problems });
+  } catch (error) {
+    console.error(`Error fetching contest problems for ${slug}:`, error.message);
+    res.status(500).json({ error: "Failed to fetch contest problems" });
   }
 });
 
@@ -58,33 +99,30 @@ router.get("/leetcode-contests", async (req, res) => {
 router.get("/codeforces-contests", async (req, res) => {
   try {
     const response = await axios.get("https://codeforces.com/api/contest.list");
-    const contests = response.data.result;
+    if (!response.data || !response.data.result) {
+      return res.status(500).json({ error: "Invalid response from Codeforces API" });
+    }
 
+    const contests = response.data.result;
     const twelveMonthsAgo = new Date();
     twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
 
-    const upcomingContests = contests
-      .filter((contest) => contest.phase === "BEFORE")
-      .map((contest) => ({
-        title: contest.name,
-        startTime: new Date(contest.startTimeSeconds * 1000).toLocaleString(),
-        url: `https://codeforces.com/contest/${contest.id}`,
-        platform: "Codeforces",
-      }));
+    const formatContest = (contest) => ({
+      title: contest.name,
+      startTime: new Date(contest.startTimeSeconds * 1000).toLocaleString(),
+      url: `https://codeforces.com/contest/${contest.id}`,
+      platform: "Codeforces",
+    });
 
+    const upcomingContests = contests.filter((c) => c.phase === "BEFORE").map(formatContest);
     const pastContests = contests
-      .filter((contest) => contest.phase === "FINISHED" && new Date(contest.startTimeSeconds * 1000) >= twelveMonthsAgo)
-      .map((contest) => ({
-        title: contest.name,
-        startTime: new Date(contest.startTimeSeconds * 1000).toLocaleString(),
-        url: `https://codeforces.com/contest/${contest.id}`,
-        platform: "Codeforces",
-      }));
+      .filter((c) => c.phase === "FINISHED" && new Date(c.startTimeSeconds * 1000) >= twelveMonthsAgo)
+      .map(formatContest);
 
     res.json({ upcomingContests, pastContests });
   } catch (error) {
     console.error("Error fetching Codeforces contests:", error.message);
-    res.status(500).json({ error: "Error fetching Codeforces contests" });
+    res.status(500).json({ error: "Failed to fetch Codeforces contests" });
   }
 });
 
@@ -96,7 +134,8 @@ router.post("/bookmarks", async (req, res) => {
     await bookmark.save();
     res.status(201).json({ message: "Bookmarked successfully!" });
   } catch (error) {
-    res.status(500).json({ error: "Error saving bookmark" });
+    console.error("Error saving bookmark:", error.message);
+    res.status(500).json({ error: "Failed to save bookmark" });
   }
 });
 
@@ -106,7 +145,8 @@ router.get("/bookmarks", async (req, res) => {
     const bookmarks = await Bookmark.find();
     res.json(bookmarks);
   } catch (error) {
-    res.status(500).json({ error: "Error fetching bookmarks" });
+    console.error("Error fetching bookmarks:", error.message);
+    res.status(500).json({ error: "Failed to fetch bookmarks" });
   }
 });
 
@@ -116,7 +156,8 @@ router.delete("/bookmarks/:id", async (req, res) => {
     await Bookmark.findByIdAndDelete(req.params.id);
     res.json({ message: "Bookmark removed" });
   } catch (error) {
-    res.status(500).json({ error: "Error deleting bookmark" });
+    console.error("Error deleting bookmark:", error.message);
+    res.status(500).json({ error: "Failed to delete bookmark" });
   }
 });
 

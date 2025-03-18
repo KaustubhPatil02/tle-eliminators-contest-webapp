@@ -6,8 +6,10 @@ require("dotenv").config();
 const contestRoutes = require("./routes/contestRoutes");
 
 const app = express();
-app.use(cors());
 app.use(express.json());
+app.use(cors({
+  origin: 'http://localhost:5173' // Allow requests only from frontend
+}));
 
 // Routes
 app.use("/api", contestRoutes);

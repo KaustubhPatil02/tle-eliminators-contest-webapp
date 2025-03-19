@@ -83,7 +83,7 @@ const ContestCard = ({ contest, fetchBookmarks }) => {
       </div>
 
       {/* Start Time */}
-      <p className="mt-2 text-gray-600 dark:text-gray-400 text-sm">Start: {contest.startTime}</p>
+      <p className="mt-2 text-gray-600 dark:text-gray-400 text-sm">Date: {contest.startTime}</p>
 
       {/* Buttons: View More & External Link */}
       <div className="mt-4 flex justify-between">

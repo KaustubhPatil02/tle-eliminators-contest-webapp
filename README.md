@@ -13,7 +13,7 @@ The project is built with  **React + Vite as frontend** and a **Node.js as backe
 ---
 ## **Walkthrough Video**
 
-Watch the walkthrough video to understand the functionality and features of the project:
+Watch the [walkthrough video](https://drive.google.com/file/d/1CrKpwBbNWbqnIGz8rHiDXjieE7rDcHX6/view?usp=drive_link) to understand the functionality and features of the project:
 
 <!-- [![Watch the Walkthrough Video]()]() -->
 

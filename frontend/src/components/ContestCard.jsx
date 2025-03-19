@@ -54,6 +54,7 @@ const ContestCard = ({ contest, fetchBookmarks }) => {
       <ProblemDetails
         contestUrl={selectedContestUrl} // Pass the selected contest URL
         platform={platform} // Pass the platform
+        contestTitle={contest.title} // Pass the contest
         onBack={() => setSelectedContestUrl(null)} // Reset the state when back is clicked
       />
     );
@@ -91,7 +92,7 @@ const ContestCard = ({ contest, fetchBookmarks }) => {
             e.stopPropagation(); // Prevents the card click from triggering
             setSelectedContestUrl(contest.url); // Open ProblemDetails
           }}
-          className="px-3 py-1.5 bg-blue-500 text-white rounded-md text-sm font-medium hover:bg-blue-600 transition"
+          className="px-3 py-1.5 bg-blue-500 text-white rounded-md text-sm font-medium hover:bg-blue-600 transition cursor-pointer"
         >
           View Problems
         </button>

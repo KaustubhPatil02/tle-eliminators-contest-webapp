@@ -58,8 +58,8 @@ const Home = () => {
           <h2 className="text-2xl font-semibold">Select Platforms</h2>
           <PlatformSelector selectedPlatforms={selectedPlatforms} setSelectedPlatforms={setSelectedPlatforms} />
         </div>
-        <ContestList title="Upcoming Contests" contests={upcomingContests} />
-        <ContestList title="Previous Contests" contests={pastContests} />
+        <ContestList title="📢 Upcoming Contests" contests={upcomingContests} />
+        <ContestList title="🎯 Previous Contests" contests={pastContests} />
       </div>
     </div>
   );

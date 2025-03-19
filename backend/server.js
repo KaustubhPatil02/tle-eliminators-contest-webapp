@@ -4,7 +4,7 @@ const cors = require("cors");
 require("dotenv").config();
 
 const contestRoutes = require("./routes/contestRoutes");
-const fetchLeetCodeContestProblems = require('./scrapping/fetchLeetCodeContestProblems');
+const fetchLeetCodeContestProblems = require('./scrapping/fetchContestProblems');
 
 
 const app = express();

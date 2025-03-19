@@ -7,6 +7,7 @@ const ContestCard = ({ contest, fetchBookmarks }) => {
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [bookmarkId, setBookmarkId] = useState(null);
   const [selectedContestUrl, setSelectedContestUrl] = useState(null); // State to manage ProblemDetails rendering
+  const [platform, setPlatform] = useState(contest.platform.toLowerCase()); // Set platform
 
   useEffect(() => {
     const checkIfBookmarked = async () => {
@@ -52,6 +53,7 @@ const ContestCard = ({ contest, fetchBookmarks }) => {
     return (
       <ProblemDetails
         contestUrl={selectedContestUrl} // Pass the selected contest URL
+        platform={platform} // Pass the platform
         onBack={() => setSelectedContestUrl(null)} // Reset the state when back is clicked
       />
     );

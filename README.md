@@ -1,4 +1,4 @@
-Here’s a well-documented overview of this project, including its structure, purpose, and functionality. This document is designed to help you and others understand the project and its components.
+Here’s a well-documented overview of this project, including its structure, purpose, and functionality. This document is designed to help you understand the project and its components.
 
 ---
 

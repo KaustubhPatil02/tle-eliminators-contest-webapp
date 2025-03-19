@@ -8,10 +8,16 @@ Here’s a well-documented overview of this project, including its structure, pu
 
 The **TLE Eliminators** project is a web application designed to help competitive programmers track upcoming and past contests on platforms like **LeetCode** and **Codeforces**. It also allows users to bookmark contests, view contest problems, and access related YouTube videos for learning.
 
-The project is built with a **React frontend** and a **Node.js backend**. It uses **Puppeteer** for web scraping, **MongoDB** for storing bookmarks, and **Firebase** for user authentication.
+The project is built with  **React + Vite as frontend** and a **Node.js as backend**. It uses **Puppeteer** for web scraping, **MongoDB** for storing bookmarks, and **Firebase** for user authentication.
 
 ---
+## **Walkthrough Video**
 
+Watch the walkthrough video to understand the functionality and features of the project:
+
+[![Watch the Walkthrough Video](./public/walkthrough-thumbnail.png)](https://drive.google.com/file/d/1CrKpwBbNWbqnIGz8rHiDXjieE7rDcHX6/view?usp=drive_link)
+
+---
 ## **Features**
 
 1. **User Authentication**:

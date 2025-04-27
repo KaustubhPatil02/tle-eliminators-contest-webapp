@@ -12,7 +12,7 @@ const ContestCard = ({ contest, fetchBookmarks }) => {
   useEffect(() => {
     const checkIfBookmarked = async () => {
       try {
-        const res = await axios.get(`${API}/api/bookmarks`);
+        const res = await axios.get(`${API}api/bookmarks`);
         const bookmark = res.data.find((bookmark) => bookmark.title === contest.title);
         if (bookmark) {
           setIsBookmarked(true);
@@ -28,10 +28,10 @@ const ContestCard = ({ contest, fetchBookmarks }) => {
   const handleBookmark = async () => {
     try {
       if (isBookmarked) {
-        await axios.delete(`${API}/api/bookmarks/${bookmarkId}`);
+        await axios.delete(`${API}api/bookmarks/${bookmarkId}`);
         toast.success("Bookmark removed!");
       } else {
-        const res = await axios.post(`${API}/api/bookmarks`, {
+        const res = await axios.post(`${API}api/bookmarks`, {
           title: contest.title,
           url: contest.url,
           startTime: contest.startTime,

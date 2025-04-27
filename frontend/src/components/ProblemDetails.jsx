@@ -6,7 +6,7 @@ const ProblemDetails = ({ contestUrl, platform, onBack, contestTitle }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [video, setVideo] = useState(null);
-  const API = import.meta.env.VITE_API_BASE_URL;
+  const API = import.meta.env.VITE_BACKEND_URL;
 
 
   const normalizeTitle = (title) => {
@@ -67,7 +67,7 @@ const ProblemDetails = ({ contestUrl, platform, onBack, contestTitle }) => {
     const fetchProblems = async () => {
       try {
         setLoading(true);
-        const response = await axios.get("${API}/api/contest-problems", {
+        const response = await axios.get(`${API}api/contest-problems`, {
           params: { contestUrl, platform },
         });
         setProblems(response.data.problems);

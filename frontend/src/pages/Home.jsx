@@ -21,7 +21,7 @@ const Home = () => {
           const upcoming = [];
           const past = [];
           for (const platform of selectedPlatforms) {
-            const res = await axios.get(`${backendurl}/api/${platform}-contests`);
+            const res = await axios.get(`${backendurl}api/${platform}-contests`);
             upcoming.push(...res.data.upcomingContests);
             past.push(...res.data.pastContests);
           }

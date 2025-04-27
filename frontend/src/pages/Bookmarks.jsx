@@ -7,10 +7,11 @@ import Navbar from "../components/Navbar";
 const Bookmarks = () => {
   const [bookmarks, setBookmarks] = useState([]);
   const { theme } = useContext(ThemeContext);
+  const frontendurl = 'import.meta.env.VITE_FRONTEND_URL';
 
   const fetchBookmarks = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/bookmarks");
+      const res = await axios.get(`${frontendurl}/api/bookmarks`);
       setBookmarks(res.data);
     } catch (error) {
       console.error("Error fetching bookmarks:", error);

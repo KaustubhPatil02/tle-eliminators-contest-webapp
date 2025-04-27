@@ -13,6 +13,7 @@ const Home = () => {
   const [selectedPlatforms, setSelectedPlatforms] = useState(["leetcode"]);
   const [upcomingContests, setUpcomingContests] = useState([]);
   const [pastContests, setPastContests] = useState([]);
+  const frontendurl = 'import.meta.env.VITE_FRONTEND_URL';
 
   useEffect(() => {
     if (user) {
@@ -21,7 +22,7 @@ const Home = () => {
           const upcoming = [];
           const past = [];
           for (const platform of selectedPlatforms) {
-            const res = await axios.get(`http://localhost:5000/api/${platform}-contests`);
+            const res = await axios.get(`${frontendurl}/api/${platform}-contests`);
             upcoming.push(...res.data.upcomingContests);
             past.push(...res.data.pastContests);
           }

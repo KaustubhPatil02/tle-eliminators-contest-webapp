@@ -67,7 +67,7 @@ const ProblemDetails = ({ contestUrl, platform, onBack, contestTitle }) => {
     const fetchProblems = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`${API}api/contest-problems`, {
+        const response = await axios.get(`${API}/api/contest-problems`, {
           params: { contestUrl, platform },
         });
         setProblems(response.data.problems);

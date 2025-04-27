@@ -24,7 +24,6 @@ app.use("/api", contestRoutes);
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  serverSelectionTimeoutMS: 30000, // Keep trying to send operations for 5 seconds
 })
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.error(err));

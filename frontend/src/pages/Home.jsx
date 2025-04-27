@@ -13,7 +13,7 @@ const Home = () => {
   const [selectedPlatforms, setSelectedPlatforms] = useState(["leetcode"]);
   const [upcomingContests, setUpcomingContests] = useState([]);
   const [pastContests, setPastContests] = useState([]);
-  const backendurl = import.meta.env.VITE_BACKEND_URL;
+  // const backendurl = import.meta.env.VITE_BACKEND_URL;
   useEffect(() => {
     if (user) {
       const fetchContests = async () => {
@@ -21,7 +21,7 @@ const Home = () => {
           const upcoming = [];
           const past = [];
           for (const platform of selectedPlatforms) {
-            const res = await axios.get(`${backendurl}/api/${platform}-contests`);
+            const res = await axios.get(`https://backend-tle-eliminators-contest.vercel.app/api/${platform}-contests`);
             upcoming.push(...res.data.upcomingContests);
             past.push(...res.data.pastContests);
           }

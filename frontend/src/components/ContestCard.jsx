@@ -8,7 +8,7 @@ const ContestCard = ({ contest, fetchBookmarks }) => {
   const [bookmarkId, setBookmarkId] = useState(null);
   const [selectedContestUrl, setSelectedContestUrl] = useState(null); // State to manage ProblemDetails rendering
   const [platform, setPlatform] = useState(contest.platform.toLowerCase()); // Set platform
-  const API = import.meta.env.VITE_API_BASE_URL;
+  const API = import.meta.env.VITE_BACKEND_URL;
   useEffect(() => {
     const checkIfBookmarked = async () => {
       try {
@@ -31,7 +31,7 @@ const ContestCard = ({ contest, fetchBookmarks }) => {
         await axios.delete(`${API}/api/bookmarks/${bookmarkId}`);
         toast.success("Bookmark removed!");
       } else {
-        const res = await axios.post("${API}/api/bookmarks", {
+        const res = await axios.post(`${API}/api/bookmarks`, {
           title: contest.title,
           url: contest.url,
           startTime: contest.startTime,

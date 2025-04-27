@@ -10,7 +10,7 @@ const fetchLeetCodeContestProblems = require('./scrapping/fetchContestProblems')
 const app = express();
 app.use(express.json());
 app.use(cors({
-  origin: 'https://tle-eliminators-contest-webapp.vercel.app/' // Allow requests only from frontend
+  origin:["https://tle-eliminators.vercel.app", "http://localhost:5173"],
 }));
 
 // Routes

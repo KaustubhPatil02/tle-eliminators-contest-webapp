@@ -143,7 +143,9 @@ router.post("/bookmarks", async (req, res) => {
 // ✅ Fetch Bookmarked Contests
 router.get("/bookmarks", async (req, res) => {
   try {
+    console.log("Attempting to fetch bookmarks...");
     const bookmarks = await Bookmark.find();
+    console.log("Bookmarks fetched successfully:", bookmarks);
     res.json(bookmarks);
   } catch (error) {
     console.error("Error fetching bookmarks:", error.message);

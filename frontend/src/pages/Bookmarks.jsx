@@ -11,7 +11,7 @@ const Bookmarks = () => {
   const backendurl = import.meta.env.VITE_BACKEND_URL;
   const fetchBookmarks = async () => {
     try {
-      const res = await axios.get(`${frontendurl}/api/bookmarks`);
+      const res = await axios.get(`${backendurl}/api/bookmarks`);
       setBookmarks(res.data);
     } catch (error) {
       console.error("Error fetching bookmarks:", error);
